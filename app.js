@@ -27,7 +27,7 @@ function Product(name, fileExtension = 'jpg'){
   this.img = `img/${name}.${fileExtension}`;
   this.clicks = 0;
   this.views = 0;
-
+  
   productArray.push(this);
 }
 
@@ -59,28 +59,32 @@ function getRandomIndex(){
 }
 
 // render images function
+let renderImgArray = [];
 
 function renderImg(){
-  let productOneIndex = getRandomIndex();
-  let productTwoIndex = getRandomIndex();
-  let productThreeIndex = getRandomIndex();
 
-  while(productOneIndex === productTwoIndex || productTwoIndex === productThreeIndex || productOneIndex === productThreeIndex){
-    productTwoIndex = getRandomIndex();
-    productThreeIndex = getRandomIndex();
+  while(renderImgArray.length < 6) {
+    let randomNumber = getRandomIndex();
+    if(!renderImgArray.includes(randomNumber)){
+      renderImgArray.push(randomNumber);
+    }
   }
 
-  imgOne.src = productArray[productOneIndex].img;
-  imgOne.alt = productArray[productOneIndex].productName;
-  productArray[productOneIndex].views++;
+  let tempHolderOne = renderImgArray.shift();
+  let tempHolderTwo = renderImgArray.shift();
+  let tempHolderThree = renderImgArray.shift();
 
-  imgTwo.src = productArray[productTwoIndex].img;
-  imgTwo.alt = productArray[productTwoIndex].productName;
-  productArray[productTwoIndex].views++;
+  imgOne.src = productArray[tempHolderOne].img;
+  imgOne.alt = productArray[tempHolderOne].productName;
+  productArray[tempHolderOne].views++;
 
-  imgThree.src = productArray[productThreeIndex].img;
-  imgThree.alt = productArray[productThreeIndex].productName;
-  productArray[productThreeIndex].views++;
+  imgTwo.src = productArray[tempHolderTwo].img;
+  imgTwo.alt = productArray[tempHolderTwo].productName;
+  productArray[tempHolderTwo].views++;
+
+  imgThree.src = productArray[tempHolderThree].img;
+  imgThree.alt = productArray[tempHolderThree].productName;
+  productArray[tempHolderThree].views++;
 }
 
 renderImg();
