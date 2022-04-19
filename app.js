@@ -1,11 +1,5 @@
 'use strict';
 
-/* Need:
-  show three images
-  25 selections
-  total number of clicks and percentage of times the item was clicked [(click/total) *100]
-*/
-
 // Global variables
 let selectionCount = 25;
 let productArray = [];
@@ -17,9 +11,11 @@ let imgOne = document.getElementById('image-one');
 let imgTwo = document.getElementById('image-two');
 let imgThree = document.getElementById('image-three');
 
-let resultsList = document.getElementById('results-display');
-let resultsBtn = document.getElementById('view-results-btn');
+// let resultsList = document.getElementById('results-display');
+// let resultsBtn = document.getElementById('view-results-btn');
 
+// canvas reference
+let ctx = document.getElementById('busMall-chart');
 
 // Constructor Functions
 function Product(name, fileExtension = 'jpg'){
@@ -51,7 +47,7 @@ new Product('unicorn');
 new Product('water-can');
 new Product('wine-glass');
 
-console.log(productArray);
+// console.log(productArray);
 // Helper functions
 function getRandomIndex(){
   // sourced from w3schools and lab demo
@@ -102,20 +98,72 @@ function handleClick(event){
 
   if(selectionCount === 0){
     imgContainer.removeEventListener('click', handleClick);
+    renderChart(); // chart render
   }
   renderImg();
 }
 
-function showResults(){
-  if(selectionCount === 0){
-    for(let i=0; i<productArray.length; i++){
-      let li = document.createElement('li');
-      li.textContent = `${productArray[i].productName}: ${productArray[i].views} views, ${productArray[i].clicks} clicks, ${Math.round((productArray[i].clicks/productArray[i].views)*100) || 0}% vote per view`;
-      resultsList.appendChild(li);
-    }
+// function showResults(){
+//   if(selectionCount === 0){
+//     for(let i=0; i<productArray.length; i++){
+//       let li = document.createElement('li');
+//       li.textContent = `${productArray[i].productName}: ${productArray[i].views} views, ${productArray[i].clicks} clicks, ${Math.round((productArray[i].clicks/productArray[i].views)*100) || 0}% vote per view`;
+//       resultsList.appendChild(li);
+//     }
+//   }
+  
+// render chart
+
+function renderChart() {
+  let imgName = [];
+  let imgVotes = [];
+  let imgViews = [];
+
+  console.log(productArray);
+  for(let i = 0; i < productArray.length; i++){
+    imgName.push(productArray[i].productName);
+    imgVotes.push(productArray[i].clicks);
+    imgViews.push(productArray[i].views);
   }
+  let myChartObj = {
+    type: 'bar',
+    data: {
+      labels: imgName, 
+      datasets: [{
+        label: '# of Votes',
+        data: imgVotes,
+        backgroundColor: [
+          'blue'
+        ],
+        borderColor: [
+          'blue'
+        ],
+        borderWidth: 1
+      },
+      {
+        label: '# of Views', // # votes and # views
+        data: imgViews, // the actual view or votes
+        backgroundColor: [
+          'black'
+        ],
+        borderColor: [
+          'black'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+ 
+  new Chart(ctx, myChartObj);
 }
 
 //event listeners
 imgContainer.addEventListener('click', handleClick);
-resultsBtn.addEventListener('click', showResults);
+// resultsBtn.addEventListener('click', showResults);

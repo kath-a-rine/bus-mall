@@ -38,7 +38,11 @@ img {
 
 }
 
-#view-results-btn {
+canvas {
+  border: solid white 5px;
+  margin: 15px;
+}
+/* #view-results-btn {
   width: max-content;
   margin: auto;
   margin-top: 100px;
@@ -47,9 +51,9 @@ img {
   border-radius: 5px;
   background: #2a3d45;
   color: white;
-}
+} */
 
-#results-display {
+/* #results-display {
   margin: 20px;
   background: #ffcb69;
   height: 800px;
@@ -60,4 +64,4 @@ img {
   font-weight: bolder;
   line-height: 150%;
   color: black;
-}
+} */
