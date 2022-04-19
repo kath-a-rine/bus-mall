@@ -7,7 +7,7 @@
 */
 
 // Global variables
-let selectionCount = 6;
+let selectionCount = 25;
 let productArray = [];
 
 // DOM references
