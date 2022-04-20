@@ -133,10 +133,10 @@ function renderChart() {
         label: '# of Votes',
         data: imgVotes,
         backgroundColor: [
-          'blue'
+          '#3d405b'
         ],
         borderColor: [
-          'blue'
+          '#3d405b'
         ],
         borderWidth: 1
       },
@@ -144,10 +144,10 @@ function renderChart() {
         label: '# of Views', // # votes and # views
         data: imgViews, // the actual view or votes
         backgroundColor: [
-          'black'
+          '#f2cc8f'
         ],
         borderColor: [
-          'black'
+          '#f2cc8f'
         ],
         borderWidth: 1
       }]
