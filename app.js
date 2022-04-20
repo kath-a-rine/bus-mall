@@ -1,11 +1,5 @@
 'use strict';
 
-/* Need:
-  show three images
-  25 selections
-  total number of clicks and percentage of times the item was clicked [(click/total) *100]
-*/
-
 // Global variables
 let selectionCount = 25;
 let productArray = [];
@@ -17,9 +11,11 @@ let imgOne = document.getElementById('image-one');
 let imgTwo = document.getElementById('image-two');
 let imgThree = document.getElementById('image-three');
 
-let resultsList = document.getElementById('results-display');
-let resultsBtn = document.getElementById('view-results-btn');
+// let resultsList = document.getElementById('results-display');
+// let resultsBtn = document.getElementById('view-results-btn');
 
+// canvas reference
+let ctx = document.getElementById('busMall-chart');
 
 // Constructor Functions
 function Product(name, fileExtension = 'jpg'){
@@ -27,7 +23,7 @@ function Product(name, fileExtension = 'jpg'){
   this.img = `img/${name}.${fileExtension}`;
   this.clicks = 0;
   this.views = 0;
-
+  
   productArray.push(this);
 }
 
@@ -51,7 +47,7 @@ new Product('unicorn');
 new Product('water-can');
 new Product('wine-glass');
 
-console.log(productArray);
+// console.log(productArray);
 // Helper functions
 function getRandomIndex(){
   // sourced from w3schools and lab demo
@@ -59,28 +55,32 @@ function getRandomIndex(){
 }
 
 // render images function
+let renderImgArray = [];
 
 function renderImg(){
-  let productOneIndex = getRandomIndex();
-  let productTwoIndex = getRandomIndex();
-  let productThreeIndex = getRandomIndex();
 
-  while(productOneIndex === productTwoIndex || productTwoIndex === productThreeIndex || productOneIndex === productThreeIndex){
-    productTwoIndex = getRandomIndex();
-    productThreeIndex = getRandomIndex();
+  while(renderImgArray.length < 6) {
+    let randomNumber = getRandomIndex();
+    if(!renderImgArray.includes(randomNumber)){
+      renderImgArray.push(randomNumber);
+    }
   }
 
-  imgOne.src = productArray[productOneIndex].img;
-  imgOne.alt = productArray[productOneIndex].productName;
-  productArray[productOneIndex].views++;
+  let tempHolderOne = renderImgArray.shift();
+  let tempHolderTwo = renderImgArray.shift();
+  let tempHolderThree = renderImgArray.shift();
 
-  imgTwo.src = productArray[productTwoIndex].img;
-  imgTwo.alt = productArray[productTwoIndex].productName;
-  productArray[productTwoIndex].views++;
+  imgOne.src = productArray[tempHolderOne].img;
+  imgOne.alt = productArray[tempHolderOne].productName;
+  productArray[tempHolderOne].views++;
 
-  imgThree.src = productArray[productThreeIndex].img;
-  imgThree.alt = productArray[productThreeIndex].productName;
-  productArray[productThreeIndex].views++;
+  imgTwo.src = productArray[tempHolderTwo].img;
+  imgTwo.alt = productArray[tempHolderTwo].productName;
+  productArray[tempHolderTwo].views++;
+
+  imgThree.src = productArray[tempHolderThree].img;
+  imgThree.alt = productArray[tempHolderThree].productName;
+  productArray[tempHolderThree].views++;
 }
 
 renderImg();
@@ -98,20 +98,72 @@ function handleClick(event){
 
   if(selectionCount === 0){
     imgContainer.removeEventListener('click', handleClick);
+    renderChart(); // chart render
   }
   renderImg();
 }
 
-function showResults(){
-  if(selectionCount === 0){
-    for(let i=0; i<productArray.length; i++){
-      let li = document.createElement('li');
-      li.textContent = `${productArray[i].productName}: ${productArray[i].views} views, ${productArray[i].clicks} clicks, ${Math.round((productArray[i].clicks/productArray[i].views)*100) || 0}% vote per view`;
-      resultsList.appendChild(li);
-    }
+// function showResults(){
+//   if(selectionCount === 0){
+//     for(let i=0; i<productArray.length; i++){
+//       let li = document.createElement('li');
+//       li.textContent = `${productArray[i].productName}: ${productArray[i].views} views, ${productArray[i].clicks} clicks, ${Math.round((productArray[i].clicks/productArray[i].views)*100) || 0}% vote per view`;
+//       resultsList.appendChild(li);
+//     }
+//   }
+  
+// render chart
+
+function renderChart() {
+  let imgName = [];
+  let imgVotes = [];
+  let imgViews = [];
+
+  console.log(productArray);
+  for(let i = 0; i < productArray.length; i++){
+    imgName.push(productArray[i].productName);
+    imgVotes.push(productArray[i].clicks);
+    imgViews.push(productArray[i].views);
   }
+  let myChartObj = {
+    type: 'bar',
+    data: {
+      labels: imgName, 
+      datasets: [{
+        label: '# of Votes',
+        data: imgVotes,
+        backgroundColor: [
+          '#3d405b'
+        ],
+        borderColor: [
+          '#3d405b'
+        ],
+        borderWidth: 1
+      },
+      {
+        label: '# of Views', // # votes and # views
+        data: imgViews, // the actual view or votes
+        backgroundColor: [
+          '#f2cc8f'
+        ],
+        borderColor: [
+          '#f2cc8f'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+ 
+  new Chart(ctx, myChartObj);
 }
 
 //event listeners
 imgContainer.addEventListener('click', handleClick);
-resultsBtn.addEventListener('click', showResults);
+// resultsBtn.addEventListener('click', showResults);

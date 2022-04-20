@@ -24,7 +24,7 @@ main {
 
 img {
   width: 300px;
-  border: 1px solid black;
+  border: 1px solid white;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
@@ -38,7 +38,12 @@ img {
 
 }
 
-#view-results-btn {
+canvas {
+  display:flexbox;
+  justify-content: center;
+  margin: 15px;
+}
+/* #view-results-btn {
   width: max-content;
   margin: auto;
   margin-top: 100px;
@@ -47,9 +52,9 @@ img {
   border-radius: 5px;
   background: #2a3d45;
   color: white;
-}
+} */
 
-#results-display {
+/* #results-display {
   margin: 20px;
   background: #ffcb69;
   height: 800px;
@@ -60,4 +65,4 @@ img {
   font-weight: bolder;
   line-height: 150%;
   color: black;
-}
+} */
