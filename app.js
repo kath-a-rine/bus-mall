@@ -17,6 +17,16 @@ let imgThree = document.getElementById('image-three');
 // canvas reference
 let ctx = document.getElementById('busMall-chart');
 
+// local storage steps 3 and 4
+
+let retreivedProducts = localStorage.getItem('products');
+
+console.log('retreived products', retreivedProducts);
+
+let parsedProducts = JSON.parse(retreivedProducts);
+
+console.log('parsed products', parsedProducts);
+
 // Constructor Functions
 function Product(name, fileExtension = 'jpg'){
   this.productName = name;
@@ -98,7 +108,13 @@ function handleClick(event){
 
   if(selectionCount === 0){
     imgContainer.removeEventListener('click', handleClick);
-    renderChart(); // chart render
+    renderChart(); 
+
+    let stringifyProducts = JSON.stringify(productArray);
+
+    console.log('stingified products', stringifyProducts);
+
+    localStorage.setItem('products', stringifyProducts);
   }
   renderImg();
 }
